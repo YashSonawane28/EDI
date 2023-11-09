@@ -39,7 +39,21 @@ const Requests = (props) => {
                 from: account
               })
 
-              const reqDetails = {state: ownerOwns[0], district: ownerOwns[1], city: ownerOwns[2], surveyNo: ownerOwns[3].words[0], index: i, reqNo: j, requester, propertyId}
+              const requesterName = await contract.getRequesterName(ownerOwns[0], ownerOwns[1], ownerOwns[2], ownerOwns[3].words[0], j, {
+                from: account
+              })
+              console.log(typeof(requesterName))
+
+              const requesterBidAmount = await contract.getRequesterBidAmount(ownerOwns[0], ownerOwns[1], ownerOwns[2], ownerOwns[3].words[0], j, {
+                from: account
+              })
+
+              console.log(typeof(requesterBidAmount))
+
+              const stringBidAmount = parseFloat(requesterBidAmount)
+    
+              const reqDetails = {state: ownerOwns[0], district: ownerOwns[1], city: ownerOwns[2], surveyNo: ownerOwns[3].words[0], index: i, reqNo: j, requesterName:requesterName,stringBidAmount: stringBidAmount, requester, propertyId}
+              console.log("below reqdetails.............")
               reqArr.push(reqDetails);
 
             }
@@ -48,8 +62,10 @@ const Requests = (props) => {
       }
 
       setRequestList(reqArr);
+      console.log("Below setreqArr  ................")
       setLength(reqArr.length);
       console.log(reqArr);
+      console.log("Below reqArr  ................")
     }
 
     getRequests();
@@ -57,7 +73,7 @@ const Requests = (props) => {
   }, [reload])
 
   const handleAcceptReq = async (_index, _reqNo) => {
-      await contract.AcceptRequest(_index, _reqNo, {from: account});
+      await contract.AcceptRequest(_index, _reqNo, {from: account, gas: 2000000});
       setReload(!reload);
   }
 
@@ -76,6 +92,8 @@ const Requests = (props) => {
                 key = {index}
                 propertyId = {details.propertyId}
                 requester = {details.requester}
+                requesterName = {details.requesterName}
+                stringBidAmount = {details.stringBidAmount}
                 index = {details.index}
                 reqNo = {details.reqNo}
                 state = {details.state}

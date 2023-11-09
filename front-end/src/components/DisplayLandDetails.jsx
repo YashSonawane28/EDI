@@ -11,18 +11,12 @@ const DisplayLandDetails = (props) => {
                 <p><b>Survey Number:</b> {props.surveyNo}</p>
                 <p><b>Property ID:</b> {props.propertyId}</p>
                 <p><b>Market Value:</b> {props.marketValue}</p>
-                <p><b>carname:</b> {props.carname}</p>
-                <p><b>fueltype:</b> {props.fueltype}</p>
-                <p><b>firstregistrationdate:</b> {props.firstregistrationdate}</p>
               </div>
 
               <div className='col-12 col-md-6'>
                 <p><b>State:</b> {props.state}</p>
                 <p><b>District:</b> {props.district}</p>
                 <p><b>City:</b> {props.city}</p>
-                <p><b>Size:</b> {props.sqft} sq. ft.</p>
-                <p><b>color:</b> {props.color} </p>
-                <p><b>carno:</b> {props.carno} </p>
               </div>
             </div>
             {

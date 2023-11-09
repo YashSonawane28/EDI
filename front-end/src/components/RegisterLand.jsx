@@ -7,7 +7,7 @@ const RegisterLand = (props) => {
   const account = props.account;
 
   const [landDetails, setLandDetials] = useState({
-    state:"", district:"", city:"", propertyId:"", surveyNo:"", owner:"", marketValue:"", size:""
+    state:"", district:"", city:"", propertyId:"", surveyNo:"", owner:props.account, marketValue:"" ,tenderName:"", tendertype:" "
   }) 
 
   const onChangeFunc = (event) =>{
@@ -16,11 +16,11 @@ const RegisterLand = (props) => {
   }
 
   const handleOnClick = async () =>{
-    await contract.registerLand(landDetails.state, landDetails.district, landDetails.city, landDetails.propertyId, landDetails.surveyNo, landDetails.owner, landDetails.marketValue, landDetails.size, {
+    await contract.registerLand(landDetails.state, landDetails.district, landDetails.city, landDetails.propertyId, landDetails.surveyNo, landDetails.owner, landDetails.marketValue, landDetails.tenderName,landDetails.tendertype,{
       from: account
     })
     console.log(landDetails)
-    setLandDetials({state:"", district:"", city:"", propertyId:"", surveyNo:"", owner:"", marketValue:"", size:""})
+    setLandDetials({state:"", district:"", city:"", propertyId:"", surveyNo:"", owner:props.account, marketValue:"",tenderName:"",tendertype:""})
   }
 
 
@@ -59,14 +59,9 @@ const RegisterLand = (props) => {
         <div className='col-12 col-sm-6'>
           <form method='POST' className='admin-form'>
             <div className='form-group'>
-                <label>Chassis ID</label>
+                <label>surveyNo</label>
                 <input type="text" className="form-control" name="surveyNo" placeholder="Enter Chassis ID" 
                 autoComplete="off" value={landDetails.surveyNo} onChange={onChangeFunc}/>
-            </div>
-            <div className='form-group'>
-                <label>Owner Address</label>
-                <input type="text" className="form-control" name="owner" placeholder="Enter owner address" 
-                autoComplete="off" value={landDetails.owner} onChange={onChangeFunc}/>
             </div>
             <div className='form-group'>
                 <label>Market Value</label>
@@ -74,10 +69,17 @@ const RegisterLand = (props) => {
                 autoComplete="off" value={landDetails.marketValue} onChange={onChangeFunc}/>
             </div>
             <div className='form-group'>
-                <label>Car Name and Model</label>
-                <input type="text" className="form-control" name="size" placeholder="Enter car name and model" 
-                autoComplete="off" value={landDetails.size} onChange={onChangeFunc}/>
+                <label>TenderName</label>
+                <input type="text" className="form-control" name="tenderName" placeholder="Enter Tender Name" 
+                autoComplete="off" value={landDetails.tenderName} onChange={onChangeFunc}/>
             </div>
+
+            <div className='form-group'>
+                <label>Tender type</label>
+                <input type="text" className="form-control" name="tendertype" placeholder="Enter Tender Type" 
+                autoComplete="off" value={landDetails.tendertype} onChange={onChangeFunc}/>
+            </div>
+
           </form>
         </div>
       </div>

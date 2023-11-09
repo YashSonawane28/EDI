@@ -34,7 +34,7 @@ const Navbar = (props) => {
                 <NavLink className="nav-link" exact activeClassName="active" to="/userprofile/requested" onClick={() => setActive(false)}>Requested</NavLink>
             </li>
             <li className="nav-item">
-                <NavLink className="nav-link" exact activeClassName="active" to="/userprofile/explore" onClick={() => setActive(false)}>Explore</NavLink>
+                <NavLink className="nav-link" exact activeClassName="active" to="/userprofile/exploreAll" onClick={() => setActive(false)}>Explore</NavLink>
             </li>
           </>
       )

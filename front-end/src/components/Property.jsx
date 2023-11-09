@@ -71,12 +71,6 @@ const Property = (props) => {
                 propertyId = {details[1].words[0]}
                 index = {details[2].words[0]}
                 marketValue = {details[3].words[0]}
-                sqft = {details[4].words[0]}
-                color = {details[5]}
-                carno = {details[6]}
-                carname = {details[7]}
-                fueltype = {details[8]}
-                firstregistrationdate = {details[9]}
                 state = {details.state}
                 district = {details.district}
                 city = {details.city}

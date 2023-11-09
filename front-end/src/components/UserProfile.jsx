@@ -5,7 +5,9 @@ import Profile from './Profile';
 import Property from './Property';
 import Requests from './Requests';
 import Requested from './Requested';
-import Explore from './Explore';
+//import Explore from './Explore';
+import ExploreAll from './ExploreAll';
+
 
 const UserProfile = (props) => {
   return (
@@ -16,7 +18,7 @@ const UserProfile = (props) => {
         <Route path='/property' element={<Property myWeb3Api={props.myWeb3Api} account={props.account} />} />
         <Route path='/requests' element={<Requests myWeb3Api={props.myWeb3Api} account={props.account} />} />
         <Route path='/requested' element={<Requested myWeb3Api={props.myWeb3Api} account={props.account} />} />
-        <Route path='/explore' element={<Explore myWeb3Api={props.myWeb3Api} account={props.account} />} />
+        <Route path='/exploreAll' element={<ExploreAll myWeb3Api={props.myWeb3Api} account={props.account} />} />
       </Routes>
     </>
   )

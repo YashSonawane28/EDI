@@ -3,10 +3,10 @@
 pragma solidity >=0.5.0 <0.9.0;
 
 contract Registry {
-
     address public superAdmin;
     uint256 public totalAdmins;
     uint256 public totalVendors;
+    uint256 public totalTendors = 1000;
 
     struct Admin {
         address adminAddress;
@@ -16,7 +16,7 @@ contract Registry {
     }
 
     struct Vendor {
-        address payable vendorAddress;
+        address vendorAddress;
         string city;
         string district;
         string state;
@@ -42,12 +42,14 @@ contract Registry {
         uint256 noOfRequests; // other users requested to this land
     }
 
+
+
     struct UserProfile {
         address userAddr;
         string fullName;
         string gender;
         string email;
-        string contact;
+        uint256 contact;
         string residentialAddr;
         uint256 totalIndices;
         uint256 requestIndices; // this user requested to other lands
@@ -76,7 +78,7 @@ contract Registry {
     }
 
     struct RequestDetails {
-        address payable whoRequested;
+        address whoRequested;
         uint256 reqIndex;
         uint256 BidAmount;
     }
@@ -112,7 +114,7 @@ contract Registry {
         string memory _fullName,
         string memory _gender,
         string memory _email,
-        string memory _contact,
+        uint256 _contact,
         string memory _residentialAddr
     ) external {
         Admin storage newAdmin = admins[_adminAddr];
@@ -133,14 +135,14 @@ contract Registry {
     }
 
     function addVendor(
-        address payable _vendorAddr,
+        address _vendorAddr,
         string memory _state,
         string memory _district,
         string memory _city,
         string memory _fullName,
         string memory _gender,
         string memory _email,
-        string memory _contact,
+        uint256 _contact,
         string memory _residentialAddr,
         string memory _year,
         string memory _vendortype
@@ -152,11 +154,11 @@ contract Registry {
         newVendor.city = _city;
         newVendor.district = _district;
         newVendor.state = _state;
-        newVendor.rating=5;
-        newVendor.noofRaters=1;
-        newVendor.vendortype=_vendortype;
-        newVendor.year=_year;
-        
+        newVendor.rating = 5;
+        newVendor.noofRaters = 1;
+        newVendor.vendortype = _vendortype;
+        newVendor.year = _year;
+
         UserProfile storage newUserProfile = userProfile[_vendorAddr];
 
         newUserProfile.fullName = _fullName;
@@ -166,11 +168,13 @@ contract Registry {
         newUserProfile.residentialAddr = _residentialAddr;
     }
 
-   //function Give Rating 
-   function GiveRating(address _vendortorating,uint256 _ratenumber) public {
-        vendors[_vendortorating].rating= vendors[_vendortorating].rating+_ratenumber;
-         vendors[_vendortorating].noofRaters++;
-   }
+    //function Give Rating
+    function GiveRating(address _vendortorating, uint256 _ratenumber) public {
+        vendors[_vendortorating].rating =
+            vendors[_vendortorating].rating +
+            _ratenumber;
+        vendors[_vendortorating].noofRaters++;
+    }
 
     // check if it is admin
     function isAdmin() external view returns (bool) {
@@ -209,15 +213,14 @@ contract Registry {
         );
 
         require(
-            landDetalsMap[_state][_district][_city][_surveyNo].registered ==
+            landDetalsMap[_state][_district][_city][totalTendors].registered ==
                 false,
             "Survey Number already registered!"
         );
 
-
         LandDetails storage newLandRegistry = landDetalsMap[_state][_district][
             _city
-        ][_surveyNo];
+        ][totalTendors];
 
         OwnerOwns storage newOwnerOwns = ownerMapsProperty[msg.sender][
             userProfile[msg.sender].totalIndices
@@ -230,21 +233,23 @@ contract Registry {
         newLandRegistry.owner = _owner;
         newLandRegistry.admin = msg.sender;
         newLandRegistry.propertyId = _propertyId;
-        newLandRegistry.surveyNumber = _surveyNo;
+        newLandRegistry.surveyNumber = totalTendors;
         newLandRegistry.index = userProfile[_owner].totalIndices;
         newLandRegistry.registered = true;
         newLandRegistry.marketValue = _marketValue;
         newLandRegistry.markAvailable = true;
-        newLandRegistry.tenderName=_tenderName;
-        newLandRegistry.tendertype=_tendertype;
-        newLandRegistry.ipfsuri="No URI";
+        newLandRegistry.tenderName = _tenderName;
+        newLandRegistry.tendertype = _tendertype;
+        newLandRegistry.ipfsuri = "No URI";
 
-        newOwnerOwns.surveyNumber = _surveyNo;
+        newOwnerOwns.surveyNumber = totalTendors;
         newOwnerOwns.state = _state;
         newOwnerOwns.district = _district;
         newOwnerOwns.city = _city;
 
         userProfile[_owner].totalIndices++;
+
+        totalTendors++;
     }
 
     // User_1: set user profile
@@ -252,7 +257,7 @@ contract Registry {
         string memory _fullName,
         string memory _gender,
         string memory _email,
-        string memory _contact,
+        uint256 _contact,
         string memory _residentialAddr
     ) public {
         UserProfile storage newUserProfile = userProfile[msg.sender];
@@ -282,7 +287,7 @@ contract Registry {
         landDetalsMap[state][district][city][surveyNumber].markAvailable = true;
     }
 
-    // User_2: Request for buy  *ownerAddress & index = arguements*
+    // User_2: Request for buy  ownerAddress & index = arguements
     function RequestForBuy(
         string memory _state,
         string memory _district,
@@ -299,9 +304,7 @@ contract Registry {
         );
 
         uint256 req_serialNum = thisLandDetail.noOfRequests;
-        thisLandDetail.requests[req_serialNum].whoRequested = payable(
-            msg.sender
-        );
+        thisLandDetail.requests[req_serialNum].whoRequested = msg.sender;
         thisLandDetail.requests[req_serialNum].reqIndex = userProfile[
             msg.sender
         ].requestIndices;
@@ -321,7 +324,7 @@ contract Registry {
     }
 
     // User_1: Accept the buy request; sell.
-    function AcceptRequest(uint256 _index, uint256 _reqNo) public payable {
+    function AcceptRequest(uint256 _index, uint256 _reqNo) public {
         uint256 _surveyNo = ownerMapsProperty[msg.sender][_index].surveyNumber;
         string memory _state = ownerMapsProperty[msg.sender][_index].state;
         string memory _district = ownerMapsProperty[msg.sender][_index]
@@ -329,21 +332,13 @@ contract Registry {
         string memory _city = ownerMapsProperty[msg.sender][_index].city;
 
         // updating LandDetails
-        address payable newOwner = landDetalsMap[_state][_district][_city][
+        address newOwner = landDetalsMap[_state][_district][_city][
             _surveyNo
         ].requests[_reqNo].whoRequested;
-
-        uint256 amounttopay
-        =landDetalsMap[_state][_district][_city][
-            _surveyNo
-        ].requests[_reqNo].BidAmount;
-
-        newOwner.transfer(amounttopay);
 
         uint256 newOwner_reqIndex = landDetalsMap[_state][_district][_city][
             _surveyNo
         ].requests[_reqNo].reqIndex;
-
 
         uint256 noOfReq = landDetalsMap[_state][_district][_city][_surveyNo]
             .noOfRequests;
@@ -441,22 +436,56 @@ contract Registry {
         external
         view
         returns (
-            address,
-            uint256,
-            string memory
+            address
         )
     {
         address requester = landDetalsMap[_state][_district][_city][_surveyNo]
             .requests[_reqIndex]
             .whoRequested;
 
+        return (requester);
+    }
+
+    function getRequesterBidAmount(
+        string memory _state,
+        string memory _district,
+        string memory _city,
+        uint256 _surveyNo,
+        uint256 _reqIndex
+    )
+        external
+        view
+        returns (
+            uint256
+        )
+    {
+
         uint256 BidAmount = landDetalsMap[_state][_district][_city][_surveyNo]
             .requests[_reqIndex]
             .BidAmount;
 
-        string memory NameofRequester = userProfile[requester].fullName;
+        return (BidAmount);
+    }
 
-        return (requester, BidAmount, NameofRequester);
+    function getRequesterName(
+        string memory _state,
+        string memory _district,
+        string memory _city,
+        uint256 _surveyNo,
+        uint256 _reqIndex
+    )
+        external
+        view
+        returns (
+            string memory
+        )
+    {
+        address requester = landDetalsMap[_state][_district][_city][_surveyNo]
+            .requests[_reqIndex]
+            .whoRequested;
+        
+        string memory NameofRequester = userProfile[requester].fullName;
+        return (NameofRequester);
     }
 
     function isAvailable(
@@ -531,14 +560,14 @@ contract Registry {
             string memory,
             string memory,
             string memory,
-            string memory,
+            uint256,
             string memory
         )
     {
         string memory fullName = userProfile[msg.sender].fullName;
         string memory gender = userProfile[msg.sender].gender;
         string memory email = userProfile[msg.sender].email;
-        string memory contact = userProfile[msg.sender].contact;
+        uint256 contact = userProfile[msg.sender].contact;
         string memory residentialAddr = userProfile[msg.sender].residentialAddr;
 
         return (fullName, gender, email, contact, residentialAddr);
@@ -571,5 +600,11 @@ contract Registry {
         }
 
         return (false);
+    }
+
+    function getTotalTendors()
+    external view returns(uint256)
+    {
+        return(totalTendors);
     }
 }

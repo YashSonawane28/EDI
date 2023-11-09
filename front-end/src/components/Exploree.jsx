@@ -12,7 +12,7 @@ const Explore = (props) => {
   })
 
   const [landDetail, setLandDetail] = useState({
-    owner:"", propertyId:"", index:"", marketValue:"", sqft:"", color:"", carno:"", carname:"",fueltype:"",firstregistrationdate:""
+    owner:"", propertyId:"", index:"", marketValue:""
   })
 
   const [didIRequested, setDidIRequested] = useState(false);
@@ -29,23 +29,16 @@ const Explore = (props) => {
     const landDetails = await contract.getLandDetails(explore.state, explore.district, explore.city, explore.surveyNo, {
       from: account
     })
-    
+
     const isAvaliable = await contract.isAvailable(explore.state, explore.district, explore.city, explore.surveyNo, {
       from: account
     })
-    
+
     const owner = landDetails[0];
     const propertyId = landDetails[1].words[0]
     const index = landDetails[2].words[0]
     const marketValue = landDetails[3].words[0]
-    const sqft = landDetails[4].words[0]
     const surveyNo = explore.surveyNo
-    const color = landDetails[5]
-    const carno = landDetails[6]
-    const carname = landDetails[7]
-    const fueltype = landDetails[8]
-    const firstregistrationdate = landDetails[9]
-    
 
     if(account === owner){
       setIsOwner(true)
@@ -61,13 +54,13 @@ const Explore = (props) => {
       }
     }
 
-    setLandDetail({owner, propertyId, index, marketValue, sqft, color, carno, carname, fueltype, firstregistrationdate, surveyNo})
+    setLandDetail({owner, propertyId, index, marketValue, surveyNo})
     setAvailable(isAvaliable);
     setNoResult(1);
   }
 
   const requestForBuy = async () =>{
-    await contract.RequestForBuy(explore.state, explore.district, explore.city, explore.surveyNo, {
+    await contract.RequestForBuy(explore.state, explore.district, explore.city, explore.surveyNo,20, {
       from: account
     })
 
@@ -120,12 +113,6 @@ const Explore = (props) => {
             propertyId = {landDetail.propertyId}
             surveyNo = {landDetail.surveyNo}
             marketValue = {landDetail.marketValue}
-            sqft = {landDetail.sqft}
-            color = {landDetail.color}
-            carno = {landDetail.carno}
-            carname = {landDetail.carname}
-            fueltype = {landDetail.fueltype}
-            firstregistrationdate = {landDetail.firstregistrationdate}
             available = {available}
             isAdmin = {props.isAdmin}
             didIRequested = {didIRequested}

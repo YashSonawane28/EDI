@@ -9,7 +9,7 @@ const AddAdmin = (props) => {
   const account = props.account;
   
   const [adminData, setAdminData] = useState({
-    address:"", state:"", district:"", city:"", fullName:"", gender:"Male", email:"", contact:"", resendencialAddr:""
+    address:"", state:"M", district:"N", city:"Y", fullName:"", gender:"Male", email:"", contact:"", resendencialAddr:"",state1:"", district1:"", city1:""
   });
 
   const onChangeFunc = (event) =>{
@@ -18,12 +18,12 @@ const AddAdmin = (props) => {
   }
 
   const handleSubmit = async () =>{
-    await contract.addAdmin(adminData.address, adminData.state, adminData.district, adminData.city, adminData.fullName,adminData.gender,adminData.email,adminData.contact, adminData.resendencialAddr,{
+    await contract.addAdmin(adminData.address, adminData.state, adminData.district, adminData.city, adminData.fullName,adminData.gender,adminData.email,adminData.contact, adminData.resendencialAddr+" ,"+adminData.city1+", "+adminData.district1+", "+adminData.state1+".",{
       from: account
     })
 
     console.log('admin details submitted');
-    setAdminData({address:"", state:"", district:"", city:"",fullName:"", gender:"", email:"", contact:"", resendencialAddr:""});
+    setAdminData({address:"", state1:"", district1:"", city1:"",fullName:"", gender:"", email:"", contact:"", resendencialAddr:""});
   }
 
 
@@ -46,18 +46,18 @@ const AddAdmin = (props) => {
         </div>
         <div className='form-group'>
             <label>State</label>
-            <input type="text" className="form-control" name="state" placeholder="Enter state" 
-            autoComplete="off" value={adminData.state} onChange={onChangeFunc}/>
+            <input type="text" className="form-control" name="state1" placeholder="Enter state" 
+            autoComplete="off" value={adminData.state1} onChange={onChangeFunc}/>
         </div>
         <div className='form-group'>
             <label>District</label>
-            <input type="text" className="form-control" name="district" placeholder="Enter district" 
-            autoComplete="off" value={adminData.district} onChange={onChangeFunc}/>
+            <input type="text" className="form-control" name="district1" placeholder="Enter district" 
+            autoComplete="off" value={adminData.district1} onChange={onChangeFunc}/>
         </div>
         <div className='form-group'>
             <label>City</label>
-            <input type="text" className="form-control" name="city" placeholder="Enter city" 
-            autoComplete="off" value={adminData.city} onChange={onChangeFunc}/>
+            <input type="text" className="form-control" name="city1" placeholder="Enter city" 
+            autoComplete="off" value={adminData.city1} onChange={onChangeFunc}/>
         </div>
         <div className='form-group'>
             <label>Full Name</label>
@@ -75,7 +75,7 @@ const AddAdmin = (props) => {
             autoComplete="off" value={adminData.contact} onChange={onChangeFunc}/>
         </div>
         <div className='form-group'>
-            <label>residencial Address</label>
+            <label>Address</label>
             <input type="text" className="form-control" name="resendencialAddr" placeholder="Enter admin residencial address" 
             autoComplete="off" value={adminData.resendencialAddr} onChange={onChangeFunc}/>
         </div>

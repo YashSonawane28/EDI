@@ -1,6 +1,7 @@
 import React from 'react'
-
+import { useState } from 'react'
 const DisplayExploreResult = (props) => {
+  const [BidAmount, setBidAmount] = useState(0)
   return (
     <>
     {
@@ -11,12 +12,6 @@ const DisplayExploreResult = (props) => {
               <p><b>Survey Number:</b> {props.surveyNo}</p>
               <p><b>Property ID:</b> {props.propertyId}</p>
               <p><b>Market Value:</b> {props.marketValue}</p>
-              <p><b>Size:</b> {props.sqft} sq. ft.</p>
-              <p><b>color:</b> {props.color}</p>
-              <p><b>carno:</b> {props.carno}</p>
-              <p><b>carname:</b> {props.carname}</p>
-              <p><b>fueltype:</b> {props.fueltype}</p>
-              <p><b>firstregistrationdate:</b> {props.firstregistrationdate}</p>
 
               {
               (props.available) ?  // if land is marked for sale.
@@ -32,7 +27,13 @@ const DisplayExploreResult = (props) => {
                       (props.didIRequested) ? 
                       <button className='req-pending'><b>Request Pending</b></button>
                       :
-                      <button className='buy-btn' onClick={props.requestForBuy}><b>Request for buy</b></button>
+                      // <button className='buy-btn'onClick={props.requestForBuy(props.surveyNo)}><b>Request for buy</b></button>
+                      <>
+                      <p>Budget</p>
+                      <input type="number" onChange={(e)=>{setBidAmount(e.target.value)}} placeholder='Enter Bid Amount'/>
+                      <button className='buy-btn' onClick={() => props.requestForBuy(props.surveyNo,BidAmount)}><b>Request for buy</b></button>
+                      </>
+                      
                     )
                 )
                 :

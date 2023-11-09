@@ -5,6 +5,8 @@ const DisplayRequests = (props) => {
         <div className='explore-result'>
             <h4><b>Property ID: {props.propertyId}</b></h4>
             <p><b>Requested by:</b> {props.requester}</p>
+            <p><b>Requested by Name:</b> {props.requesterName}</p>
+            <p><b>Bid Amount:</b> {props.stringBidAmount}</p>
             <p><b>Survey Number:</b> {props.surveyNo}</p>
             <p><b>State:</b> {props.state}</p>
             <p><b>District:</b> {props.district}</p>

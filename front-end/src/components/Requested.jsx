@@ -59,7 +59,6 @@ const Requested = (props) => {
                 propertyId = {details[1].words[0]}
                 index = {details[2].words[0]}
                 marketValue = {details[3].words[0]}
-                sqft = {details[4].words[0]}
                 state = {details.state}
                 district = {details.district}
                 city = {details.city}

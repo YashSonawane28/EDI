@@ -12,7 +12,6 @@ const DisplayRequested = (props) => {
                 <p><b>Market Value:</b> {props.marketValue}</p>
               </div>
               <div className='col-12 col-md-6'>
-                <p><b>Size:</b> {props.sqft} sq. ft.</p>
                 <p><b>State:</b> {props.state}</p>
                 <p><b>District:</b> {props.district}</p>
                 <p><b>City:</b> {props.city}</p>
